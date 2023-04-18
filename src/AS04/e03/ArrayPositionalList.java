@@ -18,13 +18,38 @@ public class ArrayPositionalList<E> implements IPositionalList<E> {
     }
 
     @Override
-    public Position<E> before(Position<E> p) {
-        return null;
+    public Position<E> before(Position<E> p) throws IllegalArgumentException {
+        try {
+            int index = positions.indexOf(p);
+
+            if(index == -1){
+                throw new IllegalArgumentException("Position not valid");
+            }else if(index == 0){
+                return null;
+            }
+
+            return positions.get(index-1);
+
+        } catch (IllegalArgumentException exc){
+            return null;
+        }
     }
 
     @Override
-    public Position<E> after(Position<E> p) {
-        return null;
+    public Position<E> after(Position<E> p) throws IllegalArgumentException {
+        try {
+            int index = positions.indexOf(p);
+
+            if(index == -1){
+                throw new IllegalArgumentException("Position not valid");
+            }else if(index == positions.size()-1){
+                return null;
+            }
+
+            return positions.get(index+1);
+        }catch(IllegalArgumentException exc){
+            return null;
+        }
     }
 
     @Override
@@ -40,61 +65,99 @@ public class ArrayPositionalList<E> implements IPositionalList<E> {
     @Override
     public Position<E> addFirst(E e) {
         Element<E> newElement = new Element<>(e);
-        positions.add(newElement);
+
+        positions.add(0,newElement);
+
         return newElement;
     }
 
     @Override
     public Position<E> addLast(E e) {
         Element<E> newElement = new Element<>(e);
-        positions.add(positions.size()-1,newElement);
+        positions.add(newElement);
         return newElement;
     }
 
     @Override
-    public Position<E> addBefore(Position<E> p, E e) {
-        Element<E> newElement = new Element<>(e);
-        int index = positions.indexOf(p);
-        for(int i = positions.size()-1;i >= index-1;i--){
-            Position<E> current = positions.get(i);
-            positions.set(i+1,current);
+    public Position<E> addBefore(Position<E> p, E e) throws IllegalArgumentException {
+        try {
+            Element<E> newElement = new Element<>(e);
+            int index = positions.indexOf(p);
+
+            if (index == -1) {
+                throw new IllegalArgumentException("Position not valid");
+            }
+
+
+
+            positions.add(index, newElement);
+
+            return newElement;
+        }catch(IllegalArgumentException exc){
+            return null;
+        }
+    }
+
+    @Override
+    public Position<E> addAfter(Position<E> p, E e) throws IllegalArgumentException {
+        try {
+            Element<E> newElement = new Element<>(e);
+            int index = positions.indexOf(p);
+
+            if(index == -1){
+                throw new IllegalArgumentException("Position not valid");
+            }
+
+
+
+            positions.add(index+1,newElement);
+
+            return newElement;
+
+
+        } catch(IllegalArgumentException exc){
+            return null;
         }
 
-        positions.set(index-1,newElement);
-
-        return newElement;
     }
 
     @Override
-    public Position<E> addAfter(Position<E> p, E e) {
-        Element<E> newElement = new Element<>(e);
-        int index = positions.indexOf(p);
+    public E remove(Position<E> p) throws IllegalArgumentException {
+        try {
+            int index = positions.indexOf(p);
 
-        for(int i = positions.size()-1;i > index;i--){
-            Position<E> current = positions.get(i);
-            positions.set(i+1,current);
+            if(index == -1){
+                throw new IllegalArgumentException("Position not valid");
+            }
+
+            Position<E> removedElement = positions.get(index);
+
+            positions.remove(p);
+            return removedElement.getElement();
+
+        } catch(IllegalArgumentException exc){
+            return null;
         }
-
-        positions.set(index+1,newElement);
-        return newElement;
     }
 
     @Override
-    public E remove(Position<E> p) {
-        Position<E> removedElement = positions.get(positions.indexOf(p));
-        positions.remove(p);
-        return removedElement.getElement();
-    }
+    public E set(Position<E> p, E e) throws IllegalArgumentException {
+        try {
+            Element<E> newElement = new Element<>(e);
+            int index = positions.indexOf(p);
 
-    @Override
-    public E set(Position<E> p, E e) {
-        Element<E> newElement = new Element<>(e);
-        int index = positions.indexOf(p);
-        Element<E> oldElement = (Element<E>) positions.get(index);
+            if(index == -1){
+                throw new IllegalArgumentException("Position not valid");
+            }
 
-        positions.set(index, newElement);
+            Element<E> oldElement = (Element<E>) positions.get(index);
 
-        return oldElement.getElement();
+            positions.set(index, newElement);
+
+            return oldElement.getElement();
+        }catch(IllegalArgumentException exc){
+            return null;
+        }
     }
 
     @Override
