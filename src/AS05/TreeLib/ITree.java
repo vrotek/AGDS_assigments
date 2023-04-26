@@ -1,7 +1,8 @@
-package TreeLecture;
+package AS05.TreeLib;
+
+
 
 import java.util.Iterator;
-import java.util.List;
 
 public interface ITree<E> extends Iterable<E> {
 

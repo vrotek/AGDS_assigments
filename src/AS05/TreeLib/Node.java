@@ -1,4 +1,4 @@
-package TreeLecture;
+package AS05.TreeLib;
 
 public class Node<E> {
     protected E element;
